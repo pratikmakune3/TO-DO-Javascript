@@ -1,5 +1,9 @@
 // IIFE
 (function(){
+
+  var addButton = document.getElementById('btn');
+  var inputTask = document.getElementById('input');
+
   var lists = {
     todo: document.getElementById("todo"),
     done: document.getElementById("done")
@@ -15,8 +19,8 @@
 
       // Create checkbox element
       var checkbox = document.createElement('input');
-      checkbox.type = 'checkbox'
-      checkbox.addEventListener('click', onCheck)
+      checkbox.type = 'checkbox';
+      checkbox.addEventListener('click', onCheck);
 
       // Appending label and checkbox to li element
       liElement.appendChild(label);
@@ -25,17 +29,31 @@
       return liElement;
   }
 
-  var addTask = function(list, task) {
-    list.appendChild(task);
+  var addTask = function(task) {
+    lists.todo.appendChild(task);
   }
 
   // callback
   var onCheck = function(event){
-    var task = event.target;
-    console.log(task);
+    var task = event.target.parentElement;
+    var listId = task.parentElement.id;
+
+    console.log(listId);
+
+    listId === 'todo' ? done.appendChild(task) : todo.appendChild(task);
   }
 
-  addTask(lists.todo, makeTaskHTML('Pratik', onCheck));
-  addTask(lists.done, makeTaskHTML('Makune', onCheck));
+  var onInput = function(){
+    var inputString = inputTask.value;
+    var task = inputString.trim();
+    var addTaskString;
+    if(task.length > 0){
+      addTaskString = makeTaskHTML(task, onCheck);
+    }
+    addTask(addTaskString);
+    inputTask.value = '';
+  }
+
+  addButton.addEventListener('click', onInput);
 
 }());
